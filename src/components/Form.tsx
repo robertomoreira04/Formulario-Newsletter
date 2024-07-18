@@ -1,6 +1,35 @@
+import { useState, FormEvent } from "react";
+import { User } from "../types/User";
+import { validate } from "../utils/validate";
+
 const Form = () => {
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
+    const [agree, setAgree] = useState(false);
+
+    const [errors, setErros] = useState<User | null>(null);
+
+    const handleSubmit = (e: FormEvent) => {
+      e.preventDefault();
+
+      const data: User = {
+          name,
+          email,
+          agree,
+      };
+
+      const validateErrors = validate(data);
+
+      if(Object.keys(validateErrors).length > 0) {
+        alert("Tem erros!");
+        return;
+      }
+
+      alert("Obrigado por se Inscrever!");
+    };
+
   return (
-    <form className="flex flex-col gap-3">
+    <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
       <div className="flex flex-col">
         <label className="text-sm" htmlFor="name">Nome:</label>
         <input type="text" placeholder="Digite seu nome:" className="rounded-lg py-2 px-2 text-sm placeholder:text-stone-400 "/>
